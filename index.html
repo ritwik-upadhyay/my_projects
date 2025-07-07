@@ -40,15 +40,15 @@
 
        <script>
 
-        const apiKey = "1153dd8b7ed44737958235830250507";
-        const apiUrl = "https://api.weatherapi.com/v1/current.json?q=";
+        const apiKey = "ae6660a7d01642c7efb2085d28bad32a";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?units=metric&q=";
 
         const searchBox = document.querySelector(".search input");
         const searchBtn = document.querySelector(".search button");
         const weatherIcon = document.querySelector(".weather-icon");
 
         async function checkWeather(city) {
-            const response = await fetch(apiUrl + city + `&key=${apiKey}`);
+            const response = await fetch(apiUrl + city + `&appid=${apiKey}`);
 
             if(response.status == 404 || response.status == 400){
                 searchBox.value = "";
@@ -59,14 +59,14 @@
 
             
 
-            document.querySelector(".city").innerHTML = data.location.name;
-            document.querySelector(".temp").innerHTML = Math.round(data.current.temp_c) + "°C";
-            document.querySelector(".humidity").innerHTML = data.current.humidity + "%";
-            document.querySelector(".wind").innerHTML = data.current.wind_kph + " km/hr";
+            document.querySelector(".city").innerHTML = data.name;
+            document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+            document.querySelector(".humidity").innerHTML = data.main.humidity + "%";
+            document.querySelector(".wind").innerHTML = data.wind.speed + " km/hr";
 
-            const condition = data.current.condition.text;
+            //const condition = data.current.condition.text;
 
-            if (condition.includes("Mist")) {
+            /*if (condition.includes("Mist")) {
                 weatherIcon.src = "images/mist.png";
             } else if (condition.includes("Clear") || condition.includes("Sunny")) {
                weatherIcon.src = "images/clear.png";
@@ -78,7 +78,23 @@
                weatherIcon.src = "images/rain.png";
             } else if (condition.includes("Snow")) {
                weatherIcon.src = "images/snow.png";
-            } 
+            } */
+
+            if(data.weather[0].main == "Clouds"){
+                weatherIcon.src = "images/clouds.png";
+            }
+            else if(data.weather[0].main == "Clear"){
+                weatherIcon.src = "images/clear.png";
+            }
+            else if(data.weather[0].main == "Rain"){
+                weatherIcon.src = "images/rain.png";
+            }
+            else if(data.weather[0].main == "Drizzle"){
+                weatherIcon.src = "images/drizzle.png";
+            }
+            else if(data.weather[0].main == "Mist"){
+                weatherIcon.src = "images/clear.png";
+            }
              
             document.querySelector(".weather").style.display = "block";
 
